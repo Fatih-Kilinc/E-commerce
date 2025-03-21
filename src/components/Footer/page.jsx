@@ -1,3 +1,4 @@
+import React from 'react'
 const navigation = {
     solutions: [
       { name: 'Marketing', href: '#' },
@@ -88,7 +89,7 @@ const navigation = {
     ],
   }
   
-  export default function Example() {
+  export default function Footer() {
     return (
       <footer className="bg-gray-900" aria-labelledby="footer-heading">
 
