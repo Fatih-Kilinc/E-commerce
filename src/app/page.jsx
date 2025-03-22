@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { Col, Row } from "antd";
 import Card from "../components/Card/Card";
 
 function App() {

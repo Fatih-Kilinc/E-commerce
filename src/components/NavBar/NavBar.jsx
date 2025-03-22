@@ -4,6 +4,9 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FaBars } from "react-icons/fa6";
 import { FaShoppingBasket } from "react-icons/fa";
 import { useGeneralContext } from "../../context/GeneralContext";
+import { Badge } from "antd";
+import Image from "next/image";
+import Link from "next/link";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -37,13 +40,15 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                <Link href={"/"} className="flex flex-shrink-0 items-center">
+                  <Image
+                    className="h-10 w-auto"
+                    width={40}
+                    height={40}
+                    src="/logo/bol.png"
                     alt="Your Company"
                   />
-                </div>
+                </Link>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
@@ -65,6 +70,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <Badge count={5} offset={[-2,5]}>
                 <button
                   type="button"
                   onClick={() => setOpenSideBar(!openSideBar)} 
@@ -72,7 +78,7 @@ export default function Navbar() {
                 >
                   <FaShoppingBasket size={25} />
                 </button>
-
+                </Badge>
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
