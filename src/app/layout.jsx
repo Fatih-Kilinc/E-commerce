@@ -15,7 +15,7 @@ export default async function RootLayout({ children }) {
       <body>
         <Providers >
           <ShopppingCart />
-          <Navb   ar />
+          <Navbar />
           <div className="relative">
           {children}
           </div>
