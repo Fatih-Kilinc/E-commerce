@@ -1,9 +1,11 @@
 import React from "react";
-import Footer from "../components/footer/page";
-import Providers from "../providers/Providers";
+
 import "./globals.css";
-import Navbar from "../components/navbar/NavBar";
-import ShopppingCart from "../components/sidebar/SideBar";
+import ShopppingCart from "@/components/sidebar/SideBar";
+import Navbar from "@/components/navbar/NavBar";
+import Footer from "@/components/footer/page";
+import Providers from "@/providers/Providers";
+
 export const metadata = {
   title: "E-commerce",
   description:

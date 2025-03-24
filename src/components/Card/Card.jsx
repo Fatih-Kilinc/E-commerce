@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { formatCurrency } from "@/utils/helper";
-import RatingPage from "../rating/Rating";
-import LoadingComp from "../common/LoadingComp";
+
 import { useGeneralContext } from "@/context/GeneralContext";
+import LoadingComp from "../common/LoadingComp";
+import RatingPage from "../rating/Rating";
 import Button from "../common/Button";
 
 export default function Card({ products }) {
@@ -67,7 +68,7 @@ export default function Card({ products }) {
                         )}
                       </div>
                     </div>
-                    <Button
+                    <Button 
                       variant="primary"
                       size="medium"
                       onClick={() =>
