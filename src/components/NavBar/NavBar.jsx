@@ -9,10 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "Dashboard", href: "/", current: true },
+  { name: "Products", href: "/products", current: false },
 ];
 
 function classNames(...classes) {
@@ -20,7 +18,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const {openSideBar, setOpenSideBar} = useGeneralContext()
+  const { openSideBar, setOpenSideBar, cartSummary } = useGeneralContext();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -39,8 +37,8 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <Link href={"/"} className="flex flex-shrink-0 items-center">
+              <div className="sm:flex hidden flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <Link href={"/"} className="flex  flex-shrink-0 items-center">
                   <Image
                     className="h-10 w-auto"
                     width={40}
@@ -70,14 +68,17 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Badge count={5} offset={[-2,5]}>
-                <button
-                  type="button"
-                  onClick={() => setOpenSideBar(!openSideBar)} 
-                  className="px-3 items-center flex  justify-center relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white "
+                <Badge
+                  count={cartSummary?.products?.length ?? 0}
+                  offset={[-2, 5]}
                 >
-                  <FaShoppingBasket size={25} />
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpenSideBar(!openSideBar)}
+                    className="px-3 items-center flex  justify-center relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white "
+                  >
+                    <FaShoppingBasket size={25} />
+                  </button>
                 </Badge>
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">

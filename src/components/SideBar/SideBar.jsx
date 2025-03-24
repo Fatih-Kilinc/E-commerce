@@ -4,10 +4,10 @@ import Image from "next/image";
 import { GeneralContext } from "../../context/GeneralContext";
 import { useRouter } from "next/navigation";
 import useOutsideAlerter from "../../hooks/useOutsideDetecter";
+import { formatCurrency } from "@/utils/helper";
 
 export default function ShopppingCart() {
   const {
-    cartData,
     setCartData,
     cartSummary,
     removeProductFromCart,
@@ -16,7 +16,6 @@ export default function ShopppingCart() {
     setOpenSideBar,
   } = React.useContext(GeneralContext);
   const router = useRouter();
-  console.log(cartSummary);
   const ref = useRef();
   useOutsideAlerter(ref, openSideBar, () => {
     if (openSideBar) {
@@ -31,25 +30,23 @@ export default function ShopppingCart() {
       openSideBar ? "translate-x-0" : "translate-x-full "
     }`}
     >
-      <div className="flex py-3 justify-between border-b-2 border-red-700">
-        <h2 className="flex text-black text-2xl font-bold xl:order-1 order-2 leading-1 items-end justify-end gap-2">
-          {cartSummary?.products?.length > 0 && (
-            <div className="">
-              <span
-                onClick={() => setCartData([])}
-                className="text-sm text-red-500 leading-6 font-thin hover:text-black cursor-pointer"
-              >
-                Clear Cart
-              </span>
-            </div>
-          )}
-        </h2>
+      <div className="flex items-center justify-between py-3 border-b-2 border-red-700">
+        {cartSummary?.products?.length > 0 && (
+          <span
+            onClick={() => setCartData([])}
+            className="text-sm text-red-500 font-thin hover:text-black cursor-pointer"
+          >
+            Clear Cart
+          </span>
+        )}
+
         <button
           onClick={() => setOpenSideBar("")}
-          className="xl:order-2 order-1"
+          className="w-8 h-8 text-black hover:text-red-700"
+          aria-label="Close"
         >
           <svg
-            className="w-8 h-8 text-black dark:text-white hover:text-red-700"
+            className="w-full h-full"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -64,16 +61,16 @@ export default function ShopppingCart() {
             />
           </svg>
         </button>
-        <span className="order-3 xl:hidden block"></span>
       </div>
+
       <nav className="flex flex-1 flex-col">
         <div className="flex flex-col h-full">
           {cartSummary?.products?.length === 0 ? (
             <>
               <div className="flex flex-col justify-center items-center mt-32">
                 <Image
-                  src={"/Icons/empty-basket.png"}
-                  alt=""
+                  src={"/img/empty-basket.png"}
+                  alt="empty-basket"
                   width={75}
                   height={75}
                   className="md:block hidden mb-2"
@@ -86,7 +83,7 @@ export default function ShopppingCart() {
                 <button
                   type="button"
                   onClick={() => {
-                    router.push("/categories");
+                    router.push("/products");
                     setOpenSideBar("");
                   }}
                   className="inline-flex items-center uppercase justify-center gap-x-2 mt-9 w-1/2 bg-red-700 text-md font-semibold text-white  rounded-2xl  py-3 px-5"
@@ -117,27 +114,25 @@ export default function ShopppingCart() {
                   <ul role="list" className="-my-6 ">
                     {cartSummary?.products?.map((product, index) => (
                       <li key={index} className="flex py-6">
-                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <Image
+                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md ">
+                          <img
                             src={product?.img}
-                            title={product?.name}
+                            alt={product?.name}
                             fill="responsive"
-                            className="h-full w-full object-cover object-center border border-red-700 rounded-xl"
+                            className="h-full w-full object-contain object-center border border-red-700 rounded-xl"
                           />
                         </div>
 
                         <div className="ml-4 flex flex-1 flex-col">
                           <div>
                             <div className="flex flex-col justify-between text-base font-medium text-gray-900">
-                              <h3 className="text-left">
-                                {/* <a href={`/product/${slugify(product?.category)}/${slugify(product?.name)}/${product?.product_id}`} className="font-bold cursor-pointer hover:text-gray-600"> */}
-                                {product.name}
-                                {/* </a> */}
-                              </h3>
+                              <h3 className="text-left">{product.name}</h3>
                               <div className="flex flex-row sm:gap-2 gap-1  items-baseline">
                                 <p className="font-bold text-gray-500">
-                                  {/* {formatCurrency(product.price, product.currency)} */}
-                                  {product.price}
+                                  {formatCurrency(
+                                    product.price,
+                                    product.currency
+                                  )}
                                 </p>
                                 <p className="text-red-700 font-bold">
                                   {product.inclTax}
@@ -207,7 +202,7 @@ export default function ShopppingCart() {
                                 }}
                               >
                                 <svg
-                                  className="w-3 h-3 text-gray-900 dark:text-white"
+                                  className="w-3 h-3 text-gray-900 "
                                   aria-hidden="true"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
@@ -233,7 +228,7 @@ export default function ShopppingCart() {
                                 }
                               >
                                 <svg
-                                  className="w-6 h-6 text-gray-500"
+                                  className="w-6 h-6 text-gray-500 hover:text-red-600 transition-colors duration-200"
                                   aria-hidden="true"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
@@ -261,40 +256,13 @@ export default function ShopppingCart() {
                 <div className="flex justify-start gap-2 items-baseline text-base font-medium text-gray-900">
                   <p className="font-bold text-black text-xl">Subtotal:</p>
                   <p className="font-bold text-red-700 text-2xl">
-                    {cartSummary?.subtotal}
+                    {formatCurrency(cartSummary?.subTotal)}
                   </p>
                   <p className="font-bold text-xs">incl. Tax</p>
                 </div>
                 <p className="mt-0.5 text-xs text-black font-bold text-left">
                   *Shipping and taxes calculated at checkout.
                 </p>
-                <div className="mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex items-center uppercase justify-center w-full gap-x-2  bg-red-700 text-md font-semibold text-white   rounded-2xl py-3 px-5"
-                    onClick={() => {
-                      router.push("/checkout");
-                      setOpenSideBar("");
-                    }}
-                  >
-                    <svg
-                      className="w-6 h-6 text-white "
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 12H5m14 0-4 4m4-4-4-4"
-                      />
-                    </svg>
-                    checkout
-                  </button>
-                </div>
               </div>
             </>
           )}

@@ -1,25 +1,28 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { formatCurrency, slugify } from "@/utils/helper";
-import Link from "next/link";
-import RatingPage from "../Rating/Rating";
+import { formatCurrency } from "@/utils/helper";
+import RatingPage from "../rating/Rating";
 import LoadingComp from "../common/LoadingComp";
+import { useGeneralContext } from "@/context/GeneralContext";
+import Button from "../common/Button";
 
 export default function Card({ products }) {
   const [productData, setProductData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { addProductToCart } = useGeneralContext();
   useEffect(() => {
     if (products?.data) {
       setProductData(products?.data);
-      setIsLoading(false); // Veri yüklendikten sonra loading state false yapılır
+      setIsLoading(false);
     }
   }, [products]);
 
   return (
     <>
       {isLoading ? (
-        <div className="h-[500px]"><LoadingComp isLoading={true} /></div>
+        <div className="h-[500px]">
+          <LoadingComp isLoading={true} />
+        </div>
       ) : (
         <div className="bg-white my-5">
           <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -29,20 +32,11 @@ export default function Card({ products }) {
             <div className="relative h-fit grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
               {productData?.map((product, idx) => (
                 <div key={idx} className="relative ">
-                  <Link
-                    href={`/product/${product?.id}${
-                      product?.category?.[0]?.name
-                        ? `/${slugify(product?.category?.[0]?.name)}`
-                        : ``
-                    }${product?.name ? `/${slugify(product?.name)}` : ""}${
-                      product?.ean ? `/${slugify(product?.ean)}` : ""
-                    }`}
-                    className="group relative flex flex-col overflow-hidden rounded-2xl h-full border border-gray-300 pt-4 px-3"
-                  >
+                  <div className="group relative flex flex-col overflow-hidden rounded-2xl h-full border border-gray-300 py-4 px-3">
                     <img
                       src={product?.image}
                       alt={product?.name}
-                      className="object-contain object-center w-full h-[250px] transition duration-500 group-hover:scale-105"
+                      className="object-contain object-center w-full h-[250px] transition duration-500 group-hover:scale-105 "
                     />
                     <div className="relative bg-white flex flex-1 flex-col justify-between space-y-2 p-2">
                       <div className="flex flex-col">
@@ -73,7 +67,23 @@ export default function Card({ products }) {
                         )}
                       </div>
                     </div>
-                  </Link>
+                    <Button
+                      variant="primary"
+                      size="medium"
+                      onClick={() =>
+                        addProductToCart({
+                          product_id: product?.id,
+                          quantity: 1,
+                          img: product?.image,
+                          name: product?.title,
+                          price: product?.price,
+                          currency: "EUR",
+                        })
+                      }
+                      className="w-full"
+                      text="Add to Cart"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
